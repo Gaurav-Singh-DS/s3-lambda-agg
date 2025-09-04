@@ -1,0 +1,38 @@
+# Steps to Deploy the Lambda - S3 Aggregator Project
+
+Step 1: Create an S3 Bucket
+- Example: my-lambda-csv-bucket
+- This will store input CSV files and the aggregated output (saved under output/).
+
+Step 2: Create an IAM Role for Lambda
+- Go to IAM → Roles → Create Role → AWS Service → Lambda
+- Attach policies:
+   Option A (Quick way):
+     - AWSLambdaExecute  → This gives CloudWatch logging + generic S3 read/write access.
+   Option B (Best practice - least privilege):
+     - AWSLambdaBasicExecutionRole → Gives CloudWatch logging only.
+     - Add a custom inline policy for S3 → Grants GetObject, PutObject, and ListBucket
+       access **only to your specific bucket**.
+
+Step 3: Create the Lambda Function
+- Runtime: Python 3.x
+- Execution role: Select the role created in Step 2
+- Increase timeout if processing larger files (e.g., 30 seconds)
+
+Step 4: Add an S3 Trigger
+- In Lambda → Configuration → Triggers → Add Trigger
+- Choose S3 bucket
+- Event type: PUT (ObjectCreated:Put)
+- Suffix: `.csv` (so the function only triggers on CSV uploads)
+- Add trigger
+
+Step 5: Deploy Lambda Code
+- Copy `lambda_function.py` into the Lambda console OR package/upload as a .zip
+- Save and Deploy
+
+Step 6: Test the Setup
+- Upload a sample CSV into the S3 bucket
+- Lambda should process it automatically
+- Check the output in the same bucket under `output/agg.json`
+- View execution details in CloudWatch Logs
+
