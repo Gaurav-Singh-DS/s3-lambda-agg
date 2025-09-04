@@ -22,17 +22,17 @@ def lambda_handler(event, context):
     # headers = next(linesines)
     # print('headers', headers)
     print('===================')
-    dicnoary = {}
+    dictionary = {}
     for line in list_lines[1:]:
         country = line[0]
         gdp = line[-2]
-        if country in dicnoary:
-            dicnoary[country] += int(gdp)
+        if country in dictionary:
+            dictionary[country] += int(gdp)
         else:
-            dicnoary[country] = int(gdp)
+            dictionary[country] = int(gdp)
 
-    # print(dicnoary)
-    file_content = json.dumps(dicnoary)
+    # print(dictionary)
+    file_content = json.dumps(dictionary)
     if file_name.lower().endswith('.csv'):
         s3.put_object(Bucket=bucket_name, Key='output/agg.json', Body = file_content)
         print('data loaded in S3 sucessfully!')
@@ -43,3 +43,4 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!')
     }
+
