@@ -32,9 +32,10 @@ Whenever a CSV file is uploaded to the S3 bucket, the Lambda function is trigger
 ---
 
 ## 📂 Project Structure
+```bash
 s3-lambda-agg/
 │── lambda_function.py     # your code
 │── README.md              # explanation
 │── steps.txt              # Steps
-
+```
 
